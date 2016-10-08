@@ -9,7 +9,7 @@ bot.registerCommand('youtube', (msg, args) => {
     let params = {
         key: auth.ytKey,
         q: args.join(' '),
-        maxResults: 5,
+        maxResults: 1,
         part: 'snippet',
         type: 'video'
     };

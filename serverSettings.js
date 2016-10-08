@@ -317,12 +317,59 @@ bot.registerCommand('playlist', (msg, args) => {
 });
 
 bot.commands.playlist.registerSubcommand('add', (msg, args) => {
-    if (database[msg.channel.guild.id].serverPlaylist.length > 30) return `**${msg.author.username}**, sorry, your guild playlist has reached the maximum of 30 songs. Consider removing some using ;playlist remove <#number>.`;
-    if (args.length === 0) return `**${msg.author.username}**, please add a song by the title.`;
+  if (database[msg.channel.guild.id].serverPlaylist.length > 150) return `**${msg.author.username}**, sorry, your guild playlist has reached the maximum of 150 songs. Consider removing some using ;playlist remove <#number>.`;
+  if (args.length === 0) return `**${msg.author.username}**, please add a song by the title or from a YouTube playlist with ;playlist add playlist <playlist name>.`;
+  if (args[0] === 'playlist') {
+    args.splice(0, 1);
+    if (args.length < 1) return `**${msg.author.username}**, please specify the name of the playlist you wish to add from.`;
     let params = {
         key: auth.ytKey,
         q: args.join(' '),
-        maxResults: 5,
+        maxResults: 1,
+        part: 'snippet',
+        type: 'playlist'
+    };
+    axios.get('https://www.googleapis.com/youtube/v3/search', {
+        params
+    }).then((response) => {
+        if (response.data.items.length < 1) {
+          bot.createMessage(msg.channel.guild.id, `**${msg.author.username}**, there were no results returned for that search.`).catch(error => log.errC(error));
+        } else {
+          let title = response.data.items[0].snippet.title
+          let params = {
+              key: auth.ytKey,
+              maxResults: 50,
+              part: 'snippet',
+              playlistId: response.data.items[0].id.playlistId
+          };
+          axios.get('https://www.googleapis.com/youtube/v3/playlistItems', {
+              params
+          }).then((response) => {
+            if (response.data.items.length < 1) {
+              bot.createMessage(msg.channel.guild.id, `**${msg.author.username}**, that seems to be an empty playlist.`).catch(error => log.errC(error));
+            } else {
+              for (let i = 0; i < response.data.items.length; i++) {
+                if (database[msg.channel.guild.id].serverPlaylist.length >= 150) break;
+                database[msg.channel.guild.id].serverPlaylist.push(`https://www.youtube.com/watch?v=${response.data.items[i].snippet.resourceId.videoId}`);
+                database[msg.channel.guild.id].playlistInfo.push(`${response.data.items[i].snippet.title.replace(/'/g, '')}`);
+              }
+              updated = true;
+              bot.createMessage(msg.channel.guild.id, `**${msg.author.username}**, added songs from the YouTube playlist, ${title}, to the server playlist.`).catch(error => log.errC(error));
+            }
+          }).catch((response) => {
+            log.errC(response);
+            bot.createMessage(msg.channel.guild.id, `**${msg.author.username}**, sorry, I ran into a problem searching for that.`).catch(error => log.errC(error));
+          });
+        }
+    }).catch((response) => {
+        log.errC(response);
+        bot.createMessage(msg.channel.guild.id, `**${msg.author.username}**, sorry, I ran into a problem searching for that.`).catch(error => log.errC(error));
+    });
+  } else {
+    let params = {
+        key: auth.ytKey,
+        q: args.join(' '),
+        maxResults: 1,
         part: 'snippet',
         type: 'video'
     };
@@ -333,7 +380,7 @@ bot.commands.playlist.registerSubcommand('add', (msg, args) => {
             if (response.data.items[0].snippet.liveBroadcastContent === 'none') {
                 let url = `https://www.youtube.com/watch?v=${response.data.items[0].id.videoId}`;
                 let title = response.data.items[0].snippet.title;
-                database[msg.channel.guild.id].serverPlaylist.push(url.replace(/'/g, ''));
+                database[msg.channel.guild.id].serverPlaylist.push(url);
                 database[msg.channel.guild.id].playlistInfo.push(title.replace(/'/g, ''));
                 bot.createMessage(msg.channel.id, `**${msg.author.username}**, added - ${title.replace(/'/g, '')} - to the server playlist.`).catch(error => log.errC(error));
                 updated = true;
@@ -347,12 +394,13 @@ bot.commands.playlist.registerSubcommand('add', (msg, args) => {
         log.errC(response);
         bot.createMessage(msg.channel.guild.id, `**${msg.author.username}**, sorry, I ran into a problem searching for that.`).catch(error => log.errC(error));
     });
+  }
 }, {
     caseInsensitive: true,
     deleteCommand: true,
     description: 'bring the music to the playlist.',
     fullDescription: 'add a song to the server playlist.',
-    usage: '<song name>',
+    usage: '<song name> OR playlist <playlist name> e.g. ;playlist add playlist <name> (max of 50 songs from a single playlist)',
     serverOnly: true,
     requirements: {
         permissions: {
