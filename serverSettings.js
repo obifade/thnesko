@@ -284,24 +284,27 @@ bot.commands.prefix.registerSubcommand('remove', (msg, args) => {
 
 bot.registerCommand('playlist', (msg, args) => {
     if (database[msg.channel.guild.id].serverPlaylist.length === 0) return `**${msg.author.username}**, your guild playlist is currently empty.`;
-    let reply = '```XL\n';
+    let reply = [];
+    let playlist = [];
     for (let i = 0; i < database[msg.channel.guild.id].playlistInfo.length; i++) {
-        reply += `[${i + 1}] ${database[msg.channel.guild.id].playlistInfo[i]} | `;
+        playlist.push(`[${i + 1}] ${database[msg.channel.guild.id].playlistInfo[i]} | `);
+        if (playlist.join(' ').length >= 1700) {
+            reply.push(playlist);
+            playlist = [];
+        }
     }
-    if (reply.length >= 1700) {
-        let num = database[msg.channel.guild.id].playlistInfo.length / 2 + 1;
-        let index = reply.indexOf('[' + num.toString() + ']');
-        let reply1 = reply.substring(0, index - 1);
-        let reply2 = '```xl\n' + reply.substring(index - 1, reply.length);
-        reply1 += '\n```';
-        reply2 += '\n```\n*Note: your playlist will be shuffled when you use ;play playlist*';
-        bot.createMessage(msg.channel.id, `**${msg.author.username}**, here is your server playlist: ${reply1}`).then((m) => {
-            bot.createMessage(msg.channel.id, reply2).catch(error => log.errC(error));
+    if (playlist.length > 0) reply.push(playlist);
+    let num = 0;
+    let sendPlaylist = function () {
+        bot.createMessage(msg.channel.id, `\`\`\`xl\n${reply[num].join(' ')}\n\`\`\``).then((msg) => {
+            num += 1;
+            if (num < reply.length) setTimeout(sendPlaylist, 1000);
         }).catch(error => log.errC(error));
-    } else {
-        reply += '```\n*Note: your playlist will be shuffled when you use ;play playlist*';
-        return `**${msg.author.username}**, here is your server playlist: ${reply}`;
     }
+    bot.createMessage(msg.channel.id, `**${msg.author.username}**, here is your server playlist:\n\`\`\`xl\n${reply[0].join(' ')}\`\`\``).then((msg) => {
+        num += 1;
+        if (num < reply.length) setTimeout(sendPlaylist, 1000);
+    }).catch(error => log.errC(error));
 }, {
     caseInsensitive: true,
     deleteCommand: true,
@@ -317,84 +320,84 @@ bot.registerCommand('playlist', (msg, args) => {
 });
 
 bot.commands.playlist.registerSubcommand('add', (msg, args) => {
-  if (database[msg.channel.guild.id].serverPlaylist.length > 150) return `**${msg.author.username}**, sorry, your guild playlist has reached the maximum of 150 songs. Consider removing some using ;playlist remove <#number>.`;
-  if (args.length === 0) return `**${msg.author.username}**, please add a song by the title or from a YouTube playlist with ;playlist add playlist <playlist name>.`;
-  if (args[0] === 'playlist') {
-    args.splice(0, 1);
-    if (args.length < 1) return `**${msg.author.username}**, please specify the name of the playlist you wish to add from.`;
-    let params = {
-        key: auth.ytKey,
-        q: args.join(' '),
-        maxResults: 1,
-        part: 'snippet',
-        type: 'playlist'
-    };
-    axios.get('https://www.googleapis.com/youtube/v3/search', {
-        params
-    }).then((response) => {
-        if (response.data.items.length < 1) {
-          bot.createMessage(msg.channel.id, `**${msg.author.username}**, there were no results returned for that search.`).catch(error => log.errC(error));
-        } else {
-          let title = response.data.items[0].snippet.title
-          let params = {
-              key: auth.ytKey,
-              maxResults: 50,
-              part: 'snippet',
-              playlistId: response.data.items[0].id.playlistId
-          };
-          axios.get('https://www.googleapis.com/youtube/v3/playlistItems', {
-              params
-          }).then((response) => {
+    if (database[msg.channel.guild.id].serverPlaylist.length > 150) return `**${msg.author.username}**, sorry, your guild playlist has reached the maximum of 150 songs. Consider removing some using ;playlist remove <#number>.`;
+    if (args.length === 0) return `**${msg.author.username}**, please add a song by the title or from a YouTube playlist with ;playlist add playlist <playlist name>.`;
+    if (args[0] === 'playlist') {
+        args.splice(0, 1);
+        if (args.length < 1) return `**${msg.author.username}**, please specify the name of the playlist you wish to add from.`;
+        let params = {
+            key: auth.ytKey,
+            q: args.join(' '),
+            maxResults: 1,
+            part: 'snippet',
+            type: 'playlist'
+        };
+        axios.get('https://www.googleapis.com/youtube/v3/search', {
+            params
+        }).then((response) => {
             if (response.data.items.length < 1) {
-              bot.createMessage(msg.channel.id, `**${msg.author.username}**, that seems to be an empty playlist.`).catch(error => log.errC(error));
+                bot.createMessage(msg.channel.id, `**${msg.author.username}**, there were no results returned for that search.`).catch(error => log.errC(error));
             } else {
-              for (let i = 0; i < response.data.items.length; i++) {
-                if (database[msg.channel.guild.id].serverPlaylist.length >= 150) break;
-                database[msg.channel.guild.id].serverPlaylist.push(`https://www.youtube.com/watch?v=${response.data.items[i].snippet.resourceId.videoId}`);
-                database[msg.channel.guild.id].playlistInfo.push(`${response.data.items[i].snippet.title.replace(/'/g, '')}`);
-              }
-              updated = true;
-              bot.createMessage(msg.channel.id, `**${msg.author.username}**, added songs from the YouTube playlist, ${title}, to the server playlist.`).catch(error => log.errC(error));
+                let title = response.data.items[0].snippet.title
+                let params = {
+                    key: auth.ytKey,
+                    maxResults: 50,
+                    part: 'snippet',
+                    playlistId: response.data.items[0].id.playlistId
+                };
+                axios.get('https://www.googleapis.com/youtube/v3/playlistItems', {
+                    params
+                }).then((response) => {
+                    if (response.data.items.length < 1) {
+                        bot.createMessage(msg.channel.id, `**${msg.author.username}**, that seems to be an empty playlist.`).catch(error => log.errC(error));
+                    } else {
+                        for (let i = 0; i < response.data.items.length; i++) {
+                            if (database[msg.channel.guild.id].serverPlaylist.length >= 150) break;
+                            database[msg.channel.guild.id].serverPlaylist.push(`https://www.youtube.com/watch?v=${response.data.items[i].snippet.resourceId.videoId}`);
+                            database[msg.channel.guild.id].playlistInfo.push(`${response.data.items[i].snippet.title.replace(/'/g, '')}`);
+                        }
+                        updated = true;
+                        bot.createMessage(msg.channel.id, `**${msg.author.username}**, added songs from the YouTube playlist, ${title}, to the server playlist.`).catch(error => log.errC(error));
+                    }
+                }).catch((response) => {
+                    log.errC(response);
+                    bot.createMessage(msg.channel.id, `**${msg.author.username}**, sorry, I ran into a problem searching for that.`).catch(error => log.errC(error));
+                });
             }
-          }).catch((response) => {
+        }).catch((response) => {
             log.errC(response);
             bot.createMessage(msg.channel.id, `**${msg.author.username}**, sorry, I ran into a problem searching for that.`).catch(error => log.errC(error));
-          });
-        }
-    }).catch((response) => {
-        log.errC(response);
-        bot.createMessage(msg.channel.id, `**${msg.author.username}**, sorry, I ran into a problem searching for that.`).catch(error => log.errC(error));
-    });
-  } else {
-    let params = {
-        key: auth.ytKey,
-        q: args.join(' '),
-        maxResults: 1,
-        part: 'snippet',
-        type: 'video'
-    };
-    axios.get('https://www.googleapis.com/youtube/v3/search', {
-        params
-    }).then((response) => {
-        if (response.data.items.length > 0) {
-            if (response.data.items[0].snippet.liveBroadcastContent === 'none') {
-                let url = `https://www.youtube.com/watch?v=${response.data.items[0].id.videoId}`;
-                let title = response.data.items[0].snippet.title;
-                database[msg.channel.guild.id].serverPlaylist.push(url);
-                database[msg.channel.guild.id].playlistInfo.push(title.replace(/'/g, ''));
-                bot.createMessage(msg.channel.id, `**${msg.author.username}**, added - ${title.replace(/'/g, '')} - to the server playlist.`).catch(error => log.errC(error));
-                updated = true;
+        });
+    } else {
+        let params = {
+            key: auth.ytKey,
+            q: args.join(' '),
+            maxResults: 1,
+            part: 'snippet',
+            type: 'video'
+        };
+        axios.get('https://www.googleapis.com/youtube/v3/search', {
+            params
+        }).then((response) => {
+            if (response.data.items.length > 0) {
+                if (response.data.items[0].snippet.liveBroadcastContent === 'none') {
+                    let url = `https://www.youtube.com/watch?v=${response.data.items[0].id.videoId}`;
+                    let title = response.data.items[0].snippet.title;
+                    database[msg.channel.guild.id].serverPlaylist.push(url);
+                    database[msg.channel.guild.id].playlistInfo.push(title.replace(/'/g, ''));
+                    bot.createMessage(msg.channel.id, `**${msg.author.username}**, added - ${title.replace(/'/g, '')} - to the server playlist.`).catch(error => log.errC(error));
+                    updated = true;
+                } else {
+                    bot.createMessage(msg.channel.id, `**${msg.author.username}**, that's a livestream... I don't do livestreams.`).catch(error => log.errC(error));
+                }
             } else {
-                bot.createMessage(msg.channel.id, `**${msg.author.username}**, that's a livestream... I don't do livestreams.`).catch(error => log.errC(error));
+                bot.createMessage(msg.channel.id, `**${msg.author.username}**, there were no results returned for that search.`).catch(error => log.errC(error));
             }
-        } else {
-            bot.createMessage(msg.channel.id, `**${msg.author.username}**, there were no results returned for that search.`).catch(error => log.errC(error));
-        }
-    }).catch((response) => {
-        log.errC(response);
-        bot.createMessage(msg.channel.id, `**${msg.author.username}**, sorry, I ran into a problem searching for that.`).catch(error => log.errC(error));
-    });
-  }
+        }).catch((response) => {
+            log.errC(response);
+            bot.createMessage(msg.channel.id, `**${msg.author.username}**, sorry, I ran into a problem searching for that.`).catch(error => log.errC(error));
+        });
+    }
 }, {
     caseInsensitive: true,
     deleteCommand: true,
