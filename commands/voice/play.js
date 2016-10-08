@@ -13,7 +13,7 @@ bot.registerCommand('play', (msg, args) => {
     if (args.length === 0) return `**${msg.author.username}**, please give me something to search for and play. Alternatively, type playlist after play to listen to the server playlist.`;
     let connection = bot.voiceConnections.get(msg.channel.guild.id);
     if (connection.playing && queue[connection.id].type === 'playlist') return `**${msg.author.username}**, I'm currently playing from the playlist, wait for it to finish or use ;stop.`;
-    if (queue[connection.id].info.length > 50) return `**${msg.author.username}**, sorry, your queue currently exceeds the maximum of 50 songs.`;
+    if (queue[connection.id].info && queue[connection.id].info.length > 50) return `**${msg.author.username}**, sorry, your queue currently exceeds the maximum of 50 songs.`;
     let params = {
         key: auth.ytKey,
         q: args.join(' '),
