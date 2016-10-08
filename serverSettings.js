@@ -317,7 +317,7 @@ bot.registerCommand('playlist', (msg, args) => {
 });
 
 bot.commands.playlist.registerSubcommand('add', (msg, args) => {
-  if (database[msg.channel.id].serverPlaylist.length > 150) return `**${msg.author.username}**, sorry, your guild playlist has reached the maximum of 150 songs. Consider removing some using ;playlist remove <#number>.`;
+  if (database[msg.channel.guild.id].serverPlaylist.length > 150) return `**${msg.author.username}**, sorry, your guild playlist has reached the maximum of 150 songs. Consider removing some using ;playlist remove <#number>.`;
   if (args.length === 0) return `**${msg.author.username}**, please add a song by the title or from a YouTube playlist with ;playlist add playlist <playlist name>.`;
   if (args[0] === 'playlist') {
     args.splice(0, 1);
