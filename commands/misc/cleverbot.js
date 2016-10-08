@@ -9,7 +9,7 @@ bot.registerCommand('cleverbot', (msg, args) => {
     _cleverbot.prepare(function () {
         cleverbot.write(args.join(' '), function (response) {
             if (response) {
-                bot.createMessage(msg.channel.id, `**${msg.author.username}**, ${response.message}`).catch(error => log.errC(error));
+                bot.createMessage(msg.channel.id, `**${msg.author.username}**, "*${args.join(' ')}*" -\n${response.message}`).catch(error => log.errC(error));
             } else {
                 log.errC('Error with cleverbot');
                 bot.createMessage(msg.channel.id, `**${msg.author.username}**, sorry, I ran into a problem.`).catch(error => log.errC(error));
