@@ -49,14 +49,14 @@ bot.registerCommand('play', (msg, args) => {
                     queue[connection.id].type = 'queue';
                 }
             } else {
-                bot.createMessage(msg.channel.guild.id, `**${msg.author.username}**, that's a livestream... I don't do livestreams.`).catch(error => log.errC(error));
+                bot.createMessage(msg.channel.id, `**${msg.author.username}**, that's a livestream... I don't do livestreams.`).catch(error => log.errC(error));
             }
         } else {
-            bot.createMessage(msg.channel.guild.id, `**${msg.author.username}**, there were no results returned for that search.`).catch(error => log.errC(error));
+            bot.createMessage(msg.channel.id, `**${msg.author.username}**, there were no results returned for that search.`).catch(error => log.errC(error));
         }
     }).catch((response) => {
         log.errC(response);
-        bot.createMessage(msg.channel.guild.id, `**${msg.author.username}**, sorry, I ran into a problem searching for that.`).catch(error => log.errC(error));
+        bot.createMessage(msg.channel.id, `**${msg.author.username}**, sorry, I ran into a problem searching for that.`).catch(error => log.errC(error));
     });
 }, {
     aliases: ['p'],

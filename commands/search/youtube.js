@@ -19,13 +19,13 @@ bot.registerCommand('youtube', (msg, args) => {
     }).then((response) => {
         if (response.data.items.length > 0) {
             let url = `https://www.youtube.com/watch?v=${response.data.items[0].id.videoId}`;
-            bot.createMessage(msg.channel.guild.id, `**${msg.author.username}**, here's the first video I found: ${url}`).catch(error => log.errC(error));
+            bot.createMessage(msg.channel.id, `**${msg.author.username}**, here's the first video I found: ${url}`).catch(error => log.errC(error));
         } else {
-            bot.createMessage(msg.channel.guild.id, `**${msg.author.username}**, there were no results returned for that search.`).catch(error => log.errC(error));
+            bot.createMessage(msg.channel.id, `**${msg.author.username}**, there were no results returned for that search.`).catch(error => log.errC(error));
         }
     }).catch((response) => {
         log.errC(response);
-        bot.createMessage(msg.channel.guild.id, `**${msg.author.username}**, sorry, I ran into a problem.`).catch(error => log.errC(error));
+        bot.createMessage(msg.channel.id, `**${msg.author.username}**, sorry, I ran into a problem.`).catch(error => log.errC(error));
     });
 }, {
     aliases: ['yt', 'video', 'vid'],

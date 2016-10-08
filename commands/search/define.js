@@ -51,9 +51,9 @@ bot.registerCommand('synonyms', (msg, args) => {
                     result += `${i + 1}: ${response.data[i].word}\n`;
                 }
             }
-            bot.createMessage(msg.channel.guild.id, `**${msg.author.username}**, synonyms for, ${args.join(' ')}:\n${result}`).catch(error => log.errC(error));
+            bot.createMessage(msg.channel.id, `**${msg.author.username}**, synonyms for, ${args.join(' ')}:\n${result}`).catch(error => log.errC(error));
         } else {
-            bot.createMessage(msg.channel.guild.id, `**${msg.author.username}**, sorry, I couldn't find any synonyms for that word.`).catch(error => log.errC(error));
+            bot.createMessage(msg.channel.id, `**${msg.author.username}**, sorry, I couldn't find any synonyms for that word.`).catch(error => log.errC(error));
         }
     }).catch((response) => {
         log.errC(response);
