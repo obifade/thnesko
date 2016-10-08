@@ -19,6 +19,7 @@ bot.registerCommand('play', (msg, args) => {
         q: args.join(' '),
         maxResults: 1,
         part: 'snippet',
+        safeSearch: 'none',
         type: 'video'
     };
     axios.get('https://www.googleapis.com/youtube/v3/search', {
