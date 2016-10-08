@@ -295,8 +295,8 @@ bot.registerCommand('playlist', (msg, args) => {
         let reply2 = '```xl\n' + reply.substring(index - 1, reply.length);
         reply1 += '\n```';
         reply2 += '\n```\n*Note: your playlist will be shuffled when you use ;play playlist*';
-        bot.createMessage(msg.channel.guild.id, `**${msg.author.username}**, here is your server playlist: ${reply1}`).then((m) => {
-            bot.createMessage(msg.channel.guild.id, reply2).catch(error => log.errC(error));
+        bot.createMessage(msg.channel.id, `**${msg.author.username}**, here is your server playlist: ${reply1}`).then((m) => {
+            bot.createMessage(msg.channel.id, reply2).catch(error => log.errC(error));
         }).catch(error => log.errC(error));
     } else {
         reply += '```\n*Note: your playlist will be shuffled when you use ;play playlist*';
@@ -317,7 +317,7 @@ bot.registerCommand('playlist', (msg, args) => {
 });
 
 bot.commands.playlist.registerSubcommand('add', (msg, args) => {
-  if (database[msg.channel.guild.id].serverPlaylist.length > 150) return `**${msg.author.username}**, sorry, your guild playlist has reached the maximum of 150 songs. Consider removing some using ;playlist remove <#number>.`;
+  if (database[msg.channel.id].serverPlaylist.length > 150) return `**${msg.author.username}**, sorry, your guild playlist has reached the maximum of 150 songs. Consider removing some using ;playlist remove <#number>.`;
   if (args.length === 0) return `**${msg.author.username}**, please add a song by the title or from a YouTube playlist with ;playlist add playlist <playlist name>.`;
   if (args[0] === 'playlist') {
     args.splice(0, 1);
@@ -333,7 +333,7 @@ bot.commands.playlist.registerSubcommand('add', (msg, args) => {
         params
     }).then((response) => {
         if (response.data.items.length < 1) {
-          bot.createMessage(msg.channel.guild.id, `**${msg.author.username}**, there were no results returned for that search.`).catch(error => log.errC(error));
+          bot.createMessage(msg.channel.id, `**${msg.author.username}**, there were no results returned for that search.`).catch(error => log.errC(error));
         } else {
           let title = response.data.items[0].snippet.title
           let params = {
@@ -346,7 +346,7 @@ bot.commands.playlist.registerSubcommand('add', (msg, args) => {
               params
           }).then((response) => {
             if (response.data.items.length < 1) {
-              bot.createMessage(msg.channel.guild.id, `**${msg.author.username}**, that seems to be an empty playlist.`).catch(error => log.errC(error));
+              bot.createMessage(msg.channel.id, `**${msg.author.username}**, that seems to be an empty playlist.`).catch(error => log.errC(error));
             } else {
               for (let i = 0; i < response.data.items.length; i++) {
                 if (database[msg.channel.guild.id].serverPlaylist.length >= 150) break;
@@ -354,16 +354,16 @@ bot.commands.playlist.registerSubcommand('add', (msg, args) => {
                 database[msg.channel.guild.id].playlistInfo.push(`${response.data.items[i].snippet.title.replace(/'/g, '')}`);
               }
               updated = true;
-              bot.createMessage(msg.channel.guild.id, `**${msg.author.username}**, added songs from the YouTube playlist, ${title}, to the server playlist.`).catch(error => log.errC(error));
+              bot.createMessage(msg.channel.id, `**${msg.author.username}**, added songs from the YouTube playlist, ${title}, to the server playlist.`).catch(error => log.errC(error));
             }
           }).catch((response) => {
             log.errC(response);
-            bot.createMessage(msg.channel.guild.id, `**${msg.author.username}**, sorry, I ran into a problem searching for that.`).catch(error => log.errC(error));
+            bot.createMessage(msg.channel.id, `**${msg.author.username}**, sorry, I ran into a problem searching for that.`).catch(error => log.errC(error));
           });
         }
     }).catch((response) => {
         log.errC(response);
-        bot.createMessage(msg.channel.guild.id, `**${msg.author.username}**, sorry, I ran into a problem searching for that.`).catch(error => log.errC(error));
+        bot.createMessage(msg.channel.id, `**${msg.author.username}**, sorry, I ran into a problem searching for that.`).catch(error => log.errC(error));
     });
   } else {
     let params = {
@@ -385,14 +385,14 @@ bot.commands.playlist.registerSubcommand('add', (msg, args) => {
                 bot.createMessage(msg.channel.id, `**${msg.author.username}**, added - ${title.replace(/'/g, '')} - to the server playlist.`).catch(error => log.errC(error));
                 updated = true;
             } else {
-                bot.createMessage(msg.channel.guild.id, `**${msg.author.username}**, that's a livestream... I don't do livestreams.`).catch(error => log.errC(error));
+                bot.createMessage(msg.channel.id, `**${msg.author.username}**, that's a livestream... I don't do livestreams.`).catch(error => log.errC(error));
             }
         } else {
-            bot.createMessage(msg.channel.guild.id, `**${msg.author.username}**, there were no results returned for that search.`).catch(error => log.errC(error));
+            bot.createMessage(msg.channel.id, `**${msg.author.username}**, there were no results returned for that search.`).catch(error => log.errC(error));
         }
     }).catch((response) => {
         log.errC(response);
-        bot.createMessage(msg.channel.guild.id, `**${msg.author.username}**, sorry, I ran into a problem searching for that.`).catch(error => log.errC(error));
+        bot.createMessage(msg.channel.id, `**${msg.author.username}**, sorry, I ran into a problem searching for that.`).catch(error => log.errC(error));
     });
   }
 }, {
