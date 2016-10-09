@@ -33,6 +33,9 @@ bot.registerCommand('join', (msg, args) => {
                 } else {
                     queue[connection.id] = {};
                 }
+            } else if (queue[connection.id].type === 'leaving') {
+                delete queue[connection.id];
+                bot.leaveVoiceChannel(connection.channelID);
             }
         });
         connection.on('debug', (message) => {
