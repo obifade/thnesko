@@ -478,7 +478,8 @@ bot.registerCommand('tag', (msg, args) => {
 
 bot.commands.tag.registerSubcommand('add', (msg, args) => {
     if (Object.keys(database[msg.channel.guild.id].tags).length >= 20) return `**${msg.author.username}**, your guild currently exceeds the maximum of 20 tags.`;
-    if (args.length === 0 || args.length < 2 || args.indexOf('|') < 0) return `**${msg.author.username}**, please specify the tag name and what the tag should return separated by a vertical bar. e.g. ;tag add <tag name> | <tag>`;
+    if (args.length === 0 || args.length < 3 || args.indexOf('|') < 0) return `**${msg.author.username}**, please specify the tag name and what the tag should return separated by a vertical bar. e.g. ;tag add <tag name> | <tag>`;
+    if (msg.attachments.length > 0) return `**${msg.author.username}**, I don't currently support adding attachments as tags; if you wish to use an image as a tag, upload it to an image hosting service and use the link.`;
     let tagName = args.slice(0, args.indexOf('|')).join(' ').toLowerCase();
     let tagContents = args.slice(args.indexOf('|') + 1, args.length).join(' ');
     let tagOwner = `${msg.author.id}`;
