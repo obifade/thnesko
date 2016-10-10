@@ -24,6 +24,7 @@ setInterval(function () {
     }
 }, 15000);
 
+// leave now; even this one is bad by my standards
 bot.on('messageCreate', (msg) => {
     let date = new Date(Date.now());
     if ((!bot.commandOptions.ignoreSelf || msg.author.id !== bot.user.id) && (!bot.commandOptions.ignoreBots || !msg.author.bot) && (msg.prefix = bot.checkPrefix(msg))) {
