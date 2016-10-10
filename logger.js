@@ -1,7 +1,6 @@
 "use strict";
 const bot = require('./index.js');
 const fs = require('fs');
-const os = require('os');
 const chalk = require('chalk');
 const cmdExC = chalk.bold.cyan;
 const msgRecC = chalk.bold.blue;
@@ -13,8 +12,8 @@ setInterval(function () {
     if (updated === true) {
         if (writing) return;
         writing = true;
-        let data = logs.join(`,${os.EOL}`);
-        data += `,${os.EOL}`;
+        let data = logs.join(`,\n`);
+        data += `,\n`;
         fs.appendFile('./logs.txt', data, (err) => {
             if (err) throw `[${new Date(Date.now())}]: Error writing to log: ${err}`;
             console.log(chalk.white(`[${new Date(Date.now())}]: `), chalk.bold.green('Wrote to logs successfully'));
