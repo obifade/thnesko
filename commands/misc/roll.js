@@ -30,7 +30,6 @@ bot.registerCommand('roll', (msg, args) => {
     deleteCommand: true,
     description: 'roll dice.',
     fullDescription: 'RPG dice roller.',
-    serverOnly: true,
     usage: '<dice roll> e.g 1d6+2d4/2',
     cooldown: 5000
 });

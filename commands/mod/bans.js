@@ -33,7 +33,7 @@ bot.registerCommand('ban', (msg, args) => {
     description: 'ban a member.',
     fullDescription: 'ban a member from the server. Will delete 7 days worth of their messages.',
     usage: '<mention of user>',
-    serverOnly: true,
+    guildOnly: true,
     requirements: {
         permissions: {
             'banMembers': true,
@@ -75,7 +75,7 @@ bot.registerCommand('softban', (msg, args) => {
     description: 'softban a member.',
     fullDescription: 'softban a member from the server - ban then unban, deleting 7 days worth of messages.',
     usage: '<mention of user>',
-    serverOnly: true,
+    guildOnly: true,
     requirements: {
         permissions: {
             'banMembers': true,

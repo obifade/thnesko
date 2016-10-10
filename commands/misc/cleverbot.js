@@ -22,7 +22,6 @@ bot.registerCommand('cleverbot', (msg, args) => {
     deleteCommand: true,
     description: 'no, the cheese does not drive.',
     fullDescription: 'ask Cleverbot something and have it reply.',
-    serverOnly: true,
     usage: '<statement>',
     cooldown: 2000
 });

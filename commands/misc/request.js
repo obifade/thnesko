@@ -14,7 +14,6 @@ bot.registerCommand('request', (msg, args) => {
     deleteCommand: true,
     description: 'submit an idea.',
     fullDescription: 'use this command to submit a feature request. Abuse will result in you being blacklisted.',
-    serverOnly: true,
     usage: '<suggestion>',
     cooldown: 20000
 });

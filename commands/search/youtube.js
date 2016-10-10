@@ -33,7 +33,6 @@ bot.registerCommand('youtube', (msg, args) => {
     deleteCommand: true,
     description: 'YouTube search.',
     fullDescription: 'search YouTube for something and return the first video, feeling lucky, punk?',
-    serverOnly: true,
     usage: '<search query>',
     cooldown: 3000
 });

@@ -34,7 +34,7 @@ bot.registerCommand('leave', (msg, args) => {
     deleteCommand: true,
     description: 'remove the bot from the channel.',
     fullDescription: 'make the bot leave a voice channel.',
-    serverOnly: true,
+    guildOnly: true,
     requirements: {
         permissions: {
             'voiceConnect': true,

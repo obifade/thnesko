@@ -65,7 +65,7 @@ bot.registerCommand('play', (msg, args) => {
     description: 'play music.',
     fullDescription: 'play music from YouTube or add it to the queue if something is already playing.',
     usage: '<search query>',
-    serverOnly: true,
+    guildOnly: true,
     requirements: {
         permissions: {
             'voiceConnect': true,
@@ -86,7 +86,7 @@ bot.commands.play.registerSubcommand('playlist', (msg, args) => {
     queue[connection.id].type = 'playlist';
     queue[connection.id].channel = msg.channel.id;
     if (database[msg.channel.guild.id].serverPlaylist.length > 1) { // Shuffle the playlist and info array in sync
-        var l = database[msg.channel.guild.id].serverPlaylist.length,
+        let l = database[msg.channel.guild.id].serverPlaylist.length,
             i = 0,
             rnd,
             tmp1,
@@ -108,10 +108,8 @@ bot.commands.play.registerSubcommand('playlist', (msg, args) => {
     bot.createMessage(msg.channel.id, `Now playing, ${database[msg.channel.guild.id].playlistInfo[0]}, from the server playlist for **${msg.author.username}**.`).catch(error => log.errC(error));
 }, {
     caseInsensitive: true,
-    deleteCommand: true,
     description: 'play music.',
     fullDescription: 'play music from the server playlist.',
-    serverOnly: true,
     requirements: {
         permissions: {
             'voiceConnect': true,

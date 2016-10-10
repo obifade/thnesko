@@ -22,7 +22,7 @@ bot.registerCommand('skip', (msg, args) => {
     deleteCommand: true,
     description: 'skip a track.',
     fullDescription: 'skip to the next track in the queue or playlist.',
-    serverOnly: true,
+    guildOnly: true,
     requirements: {
         permissions: {
             'voiceConnect': true,

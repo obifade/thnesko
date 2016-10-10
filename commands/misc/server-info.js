@@ -25,9 +25,8 @@ bot.registerCommand('serverinfo', (msg, args) => {
     aliases: ['server-info', 's-info'],
     caseInsensitive: true,
     deleteCommand: true,
-    serverOnly: true,
     description: 'info on a server.',
     fullDescription: 'get various pieces of information about the server.',
-    serverOnly: true,
+    guildOnly: true,
     cooldown: 5000
 });

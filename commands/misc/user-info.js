@@ -50,10 +50,9 @@ bot.registerCommand('userinfo', (msg, args) => {
     aliases: ['user-info', 'u-info'],
     caseInsensitive: true,
     deleteCommand: true,
-    serverOnly: true,
     description: 'info on a user.',
     fullDescription: 'get various pieces of information about yourself or another user.',
-    serverOnly: true,
+    guildOnly: true,
     usage: '<username and discriminator of user> --optional, omit if viewing info of self',
     cooldown: 5000
 });

@@ -51,7 +51,7 @@ bot.registerCommand('join', (msg, args) => {
     deleteCommand: true,
     description: 'join a voice channel.',
     fullDescription: 'make the bot join a voice channel, preparing for the sounds of music.',
-    serverOnly: true,
+    guildOnly: true,
     requirements: {
         permissions: {
             'voiceConnect': true,

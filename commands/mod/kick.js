@@ -33,7 +33,7 @@ bot.registerCommand('kick', (msg, args) => {
     description: 'kick a member.',
     fullDescription: 'kicks a member from the server.',
     usage: '<mention of user>',
-    serverOnly: true,
+    guildOnly: true,
     requirements: {
         permissions: {
             'kickMembers': true,

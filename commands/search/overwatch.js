@@ -86,7 +86,6 @@ bot.registerCommand('overwatch', (msg, args) => {
     deleteCommand: true,
     description: 'summarised stats for Overwatch.',
     fullDescription: 'lookup the overall stats of a player in Overwatch.',
-    serverOnly: true,
     usage: '<battle tag> (including Identifier) <platform> (pc, xbl, or psn)',
     cooldown: 5000
 });
@@ -161,10 +160,8 @@ bot.commands.overwatch.registerSubcommand('achievements', (msg, args) => {
 }, {
     aliases: ['achievement'],
     caseInsensitive: true,
-    deleteCommand: true,
     description: 'achievements for Overwatch.',
     fullDescription: 'lookup the achievements of a player in Overwatch.',
-    serverOnly: true,
     usage: '<battle tag> (including Identifier) <platform> (pc, xbl, or psn)',
     cooldown: 5000
 });

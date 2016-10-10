@@ -22,7 +22,6 @@ bot.registerCommand('xkcd', (msg, args) => {
     deleteCommand: true,
     description: 'return a custom or the current XKCD comic.',
     fullDescription: 'a webcomic of romance, sarcasm, math, and language.',
-    serverOnly: true,
     usage: '<comic number> --optional, omit if you want the current comic',
     cooldown: 3000
 });

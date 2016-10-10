@@ -31,7 +31,6 @@ bot.registerCommand('define', (msg, args) => {
     deleteCommand: true,
     description: 'define a word.',
     fullDescription: 'get the definition(s) of a word from the Longman Dictionary of Contemporary English (5th edition).',
-    serverOnly: true,
     usage: '<word>',
     cooldown: 5000
 });
@@ -70,7 +69,6 @@ bot.registerCommand('synonyms', (msg, args) => {
     deleteCommand: true,
     description: 'synonyms of a word.',
     fullDescription: 'get the synonym(s) of a word.',
-    serverOnly: true,
     usage: '<word>',
     cooldown: 5000
 });

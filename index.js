@@ -145,7 +145,7 @@ bot.on("disconnect", () => {
 bot.connect();
 
 process.on('unhandledRejection', (reason, p) => {
-    log.warnC('Unhandled Rejection at: Promise', p, 'reason:', reason);
+    log.warnC(`Unhandled Rejection at: Promise ${p}, reason: ${reason}`);
 });
 
 process.on('uncaughtException', function (err) {

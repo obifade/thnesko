@@ -112,7 +112,7 @@ bot.registerCommand('leave-announcement', (msg, args) => {
     description: 'leave message.',
     fullDescription: 'enable or disable the leave message.',
     usage: '<enable> OR <disable>',
-    serverOnly: true,
+    guildOnly: true,
     requirements: {
         permissions: {
             'manageGuild': true,
@@ -143,7 +143,7 @@ bot.registerCommand('mod-announcement', (msg, args) => {
     description: 'ban and unban announcements.',
     fullDescription: 'enable or disable the announcements for mod actions. Includes: bans and unbans',
     usage: '<enable> OR <disable>',
-    serverOnly: true,
+    guildOnly: true,
     requirements: {
         permissions: {
             'manageGuild': true,
@@ -184,7 +184,7 @@ bot.registerCommand('welcome', (msg, args) => {
     description: 'welcome messages.',
     fullDescription: 'enable or disable the welcome message.',
     usage: '<enable> OR <disable>',
-    serverOnly: true,
+    guildOnly: true,
     requirements: {
         permissions: {
             'manageGuild': true,
@@ -205,11 +205,9 @@ bot.commands.welcome.registerSubcommand('set', (msg, args) => {
     }
 }, {
     caseInsensitive: true,
-    deleteCommand: true,
     description: 'hello there, creature of earth.',
     fullDescription: 'set a custom welcome message. ALL welcome messages start with the username of the person who joined, this cannot be changed, so bare that in mind.',
     usage: '<welcome message>',
-    serverOnly: true,
     requirements: {
         permissions: {
             'manageGuild': true,
@@ -228,7 +226,7 @@ bot.registerCommand('prefix', (msg, args) => {
     deleteCommand: true,
     description: ';/.><#@][] All the prefixes.',
     fullDescription: 'set a custom prefix for your server. It is advisable this isn\'t a commonly used character to prevent accidental triggering.',
-    serverOnly: true,
+    guildOnly: true,
     requirements: {
         permissions: {
             'manageGuild': true,
@@ -247,11 +245,9 @@ bot.commands.prefix.registerSubcommand('set', (msg, args) => {
     return `**${msg.author.username}**, changed the custom prefix for this server to (${args[0]}).`;
 }, {
     caseInsensitive: true,
-    deleteCommand: true,
     description: 'Allowed: !"#$%&\'()*+,-./:;<=>?@[\\/]^_`{|}~',
     fullDescription: 'set a custom prefix for your server. It is advisable this isn\'t a commonly used character to prevent accidental triggering.',
     usage: '<newPrefix>',
-    serverOnly: true,
     requirements: {
         permissions: {
             'manageGuild': true,
@@ -268,10 +264,8 @@ bot.commands.prefix.registerSubcommand('remove', (msg, args) => {
     return `**${msg.author.username}**, removed the custom prefix for this server.`;
 }, {
     caseInsensitive: true,
-    deleteCommand: true,
     description: 'remove custom prefix.',
     fullDescription: 'remove the custom prefix for your server and use the default bot prefix.',
-    serverOnly: true,
     requirements: {
         permissions: {
             'manageGuild': true,
@@ -310,7 +304,7 @@ bot.registerCommand('playlist', (msg, args) => {
     deleteCommand: true,
     description: 'view the server playlist.',
     fullDescription: 'review the contents of your server playlist.',
-    serverOnly: true,
+    guildOnly: true,
     requirements: {
         permissions: {
             'voiceConnect': true,
@@ -401,11 +395,9 @@ bot.commands.playlist.registerSubcommand('add', (msg, args) => {
     }
 }, {
     caseInsensitive: true,
-    deleteCommand: true,
     description: 'bring the music to the playlist.',
     fullDescription: 'add a song to the server playlist.',
     usage: '<song name> OR playlist <playlist name> e.g. ;playlist add playlist <name> (max of 50 songs from a single playlist)',
-    serverOnly: true,
     requirements: {
         permissions: {
             'voiceConnect': true,
@@ -424,11 +416,9 @@ bot.commands.playlist.registerSubcommand('remove', (msg, args) => {
     updated = true;
 }, {
     caseInsensitive: true,
-    deleteCommand: true,
     description: 'remove music form the playlist.',
     fullDescription: 'remove a song from the server playlist.',
     usage: '<song number>',
-    serverOnly: true,
     requirements: {
         permissions: {
             'voiceConnect': true,
@@ -445,10 +435,8 @@ bot.commands.playlist.registerSubcommand('clear', (msg, args) => {
     return `**${msg.author.username}**, cleared this server's playlist.`;
 }, {
     caseInsensitive: true,
-    deleteCommand: true,
     description: 'clear your playlist.',
     fullDescription: 'clears your playlist entirely.',
-    serverOnly: true,
     requirements: {
         permissions: {
             'voiceConnect': true,
@@ -472,7 +460,7 @@ bot.registerCommand('tag', (msg, args) => {
     description: 'use one of your server tags.',
     fullDescription: 'allows you to use one of your guild tags.',
     usage: '<tag name>',
-    serverOnly: true,
+    guildOnly: true,
     cooldown: 3000
 });
 
@@ -494,11 +482,9 @@ bot.commands.tag.registerSubcommand('add', (msg, args) => {
     return `**${msg.author.username}**, added the tag, ${tagName}, with the contents, ${tagContents}.`;
 }, {
     caseInsensitive: true,
-    deleteCommand: true,
     description: 'add a tag.',
     fullDescription: 'add a tag to your server tags.',
     usage: '<tag name> | <tag contents>',
-    serverOnly: true,
     cooldown: 3000
 });
 
@@ -513,11 +499,9 @@ bot.commands.tag.registerSubcommand('remove', (msg, args) => {
     return `**${msg.author.username}**, removed the tag, ${args.join(' ').toLowerCase()}.`;
 }, {
     caseInsensitive: true,
-    deleteCommand: true,
     description: 'remove a tag.',
     fullDescription: 'remove a tag you own from your server tags.',
     usage: '<tag name>',
-    serverOnly: true,
     cooldown: 3000
 });
 
@@ -537,11 +521,9 @@ bot.commands.tag.registerSubcommand('search', (msg, args) => {
     return `**${msg.author.username}**, info for that tag:\n${result}`;
 }, {
     caseInsensitive: true,
-    deleteCommand: true,
     description: 'search for a tag.',
     fullDescription: 'search a tag from your server tags. Will return info on that tag if found.',
     usage: '<tag name>',
-    serverOnly: true,
     cooldown: 3000
 });
 
@@ -552,10 +534,8 @@ bot.commands.tag.registerSubcommand('clear', (msg, args) => {
     return `**${msg.author.username}**, cleared the tags for this server.`;
 }, {
     caseInsensitive: true,
-    deleteCommand: true,
     description: 'clear tags.',
     fullDescription: 'remove all tags from the server.',
-    serverOnly: true,
     requirements: {
         permissions: {
             'manageGuild': true,

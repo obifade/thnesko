@@ -17,7 +17,7 @@ bot.registerCommand('resume', (msg, args) => {
     deleteCommand: true,
     description: 'resume music.',
     fullDescription: 'resume playback.',
-    serverOnly: true,
+    guildOnly: true,
     requirements: {
         permissions: {
             'voiceConnect': true,

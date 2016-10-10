@@ -22,7 +22,7 @@ bot.registerCommand('unban', (msg, args) => {
     description: 'unban a member.',
     fullDescription: 'unban a member from the server.',
     usage: '<username and discriminator of user to unban> (not a nickname)',
-    serverOnly: true,
+    guildOnly: true,
     requirements: {
         permissions: {
             'banMembers': true,

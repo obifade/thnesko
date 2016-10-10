@@ -19,16 +19,19 @@ bot.registerCommand('joke', (msg, args) => {
     deleteCommand: true,
     description: 'What did one bot say to the other bot? (╯°□°）╯︵ ┻━┻ To which the bot replied, ┬─┬﻿ ノ( ゜-゜ノ).',
     fullDescription: 'get a random joke, so random, I don\'t even know what kind of jokes they are to even tell you.',
-    serverOnly: true,
     cooldown: 3000
 });
 
 bot.commands.joke.registerSubcommand('yomamma', (msg, args) => {
     axios.get('http://api.yomomma.info/').then((response) => {
-        if (msg.mentions.length === 0) {
-            bot.createMessage(msg.channel.id, `**${msg.author.username}**, ${response.data.joke}`).catch(error => log.errC(error));
+        if (!response.data.joke) {
+            bot.createMessage(msg.channel.id, `**${msg.author.username}**, sorry, I ran into a problem.`).catch(error => log.errC(error));
         } else {
-            bot.createMessage(msg.channel.id, `**${msg.channel.guild.members.find(m => m.id === msg.mentions[0].id).user.username}**, ${response.data.joke}`).catch(error => log.errC(error));
+            if (msg.mentions.length === 0) {
+                bot.createMessage(msg.channel.id, `**${msg.author.username}**, ${response.data.joke}`).catch(error => log.errC(error));
+            } else {
+                bot.createMessage(msg.channel.id, `**${msg.channel.guild.members.find(m => m.id === msg.mentions[0].id).user.username}**, ${response.data.joke}`).catch(error => log.errC(error));
+            }
         }
     }).catch((response) => {
         log.errC(response);
@@ -42,10 +45,8 @@ bot.commands.joke.registerSubcommand('yomamma', (msg, args) => {
 }, {
     aliases: ['yo-mamma'],
     caseInsensitive: true,
-    deleteCommand: true,
     description: 'yo-mamma joke.',
     fullDescription: 'yo mamma so fat...',
-    serverOnly: true,
     usage: '<mention of someone to insult> --optional (laugh with them, not at them)',
     cooldown: 3000
 });
@@ -68,9 +69,7 @@ bot.commands.joke.registerSubcommand('chuck', (msg, args) => {
     });
 }, {
     caseInsensitive: true,
-    deleteCommand: true,
     description: 'Chuck Norris jokes.',
     fullDescription: 'get a random joke Chuck Norris joke.',
-    serverOnly: true,
     cooldown: 3000
 });

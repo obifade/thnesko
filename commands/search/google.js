@@ -19,7 +19,6 @@ bot.registerCommand('google', (msg, args) => {
     deleteCommand: true,
     description: 'Google it.',
     fullDescription: 'search Google for something and return the first link, feeling lucky, punk?',
-    serverOnly: true,
     usage: '<search query>',
     cooldown: 3000
 });

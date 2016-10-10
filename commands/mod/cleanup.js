@@ -20,7 +20,7 @@ bot.registerCommand('cleanup', (msg, args) => {
     description: 'bulk delete.',
     fullDescription: 'bulk delete a custom amount of messages from a channel, or purge it entirely.',
     usage: '<number of messages to delete> (use \'all\' for no limit - will delete all messages)',
-    serverOnly: true,
+    guildOnly: true,
     requirements: {
         permissions: {
             'manageMessages': true,
@@ -84,7 +84,7 @@ bot.commands.cleanup.registerSubcommand('user', (msg, args) => {
     description: 'bulk delete (user).',
     fullDescription: 'bulk delete a custom amount of messages from a channel belonging to a specific user. If the member is no longer in your server, the bot will search through the last 100 messages for that user.',
     usage: '<user mention or username and discriminator> <number of messages to delete> (use \'all\' for no limit - will delete all messages)',
-    serverOnly: true,
+    guildOnly: true,
     requirements: {
         permissions: {
             'manageMessages': true,
@@ -107,7 +107,7 @@ bot.commands.cleanup.registerSubcommand('contains', (msg, args) => {
     description: 'bulk delete (message contents).',
     fullDescription: 'bulk delete messages with specific contents.',
     usage: '<contents messages to be deleted should contain>',
-    serverOnly: true,
+    guildOnly: true,
     requirements: {
         permissions: {
             'manageMessages': true,
@@ -128,7 +128,7 @@ bot.commands.cleanup.registerSubcommand('bot', (msg, args) => {
     deleteCommand: true,
     description: 'bulk delete (bot).',
     fullDescription: 'bulk delete messages from a channel belonging to myself.',
-    serverOnly: true,
+    guildOnly: true,
     requirements: {
         permissions: {
             'manageMessages': true,

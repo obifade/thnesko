@@ -9,6 +9,5 @@ bot.registerCommand('uptime', (msg, args) => {
     deleteCommand: true,
     description: 'uptime of the bot.',
     fullDescription: 'how long the bot has been online.',
-    serverOnly: true,
     cooldown: 10000
 });

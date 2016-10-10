@@ -17,7 +17,7 @@ bot.registerCommand('pause', (msg, args) => {
     deleteCommand: true,
     description: 'pause audio.',
     fullDescription: 'pause playback.',
-    serverOnly: true,
+    guildOnly: true,
     requirements: {
         permissions: {
             'voiceConnect': true,

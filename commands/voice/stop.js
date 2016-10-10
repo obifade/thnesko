@@ -18,7 +18,7 @@ bot.registerCommand('stop', (msg, args) => {
     deleteCommand: true,
     description: 'stop the music.',
     fullDescription: 'stop playback.',
-    serverOnly: true,
+    guildOnly: true,
     requirements: {
         permissions: {
             'voiceConnect': true,

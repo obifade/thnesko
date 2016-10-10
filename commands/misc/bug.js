@@ -14,7 +14,6 @@ bot.registerCommand('bug', (msg, args) => {
     deleteCommand: true,
     description: 'error error.',
     fullDescription: 'use this command to submit a bug. Abuse will result in you being blacklisted.',
-    serverOnly: true,
     usage: '<bug report>',
     cooldown: 20000
 });
