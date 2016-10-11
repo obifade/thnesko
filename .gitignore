@@ -1,6 +1,7 @@
 # Config
 auth.json
 database.json
+logs.txt
 
 # Logs
 logs
