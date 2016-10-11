@@ -1,0 +1,6 @@
+apps:
+  - script   : ./index.js
+    name     : 'index'
+    watch: false
+    max_memory_restart: '150M'
+    autorestart: false
