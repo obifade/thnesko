@@ -129,5 +129,10 @@ bot.commands.cleanup.registerSubcommand('bot', (msg, args) => {
     description: 'bulk delete (bot).',
     fullDescription: 'bulk delete messages from a channel belonging to myself.',
     guildOnly: true,
+    requirements: {
+        permissions: {
+            'manageMessages': true,
+        }
+    },
     cooldown: 10000
 });
