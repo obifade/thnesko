@@ -55,6 +55,12 @@ bot.on('messageCreate', (msg) => {
     updated = true;
 });
 
+bot.on('guildUnavailable', (g) => {
+    console.log(chalk.white(`[${new Date(Date.now())}]: `), chalk.bold.yellow(`Guild unavailable: ${g.id} (${g.name})`));
+    logs.push(`[${new Date(Date.now())}]: Guild unavailable: ${g.id} (${g.name})`);
+    updated = true;
+});
+
 let errC = function (error) {
     console.log(chalk.white(`[${new Date(Date.now())}]: `), chalk.bold.red(`${error}`));
     logs.push(`[${new Date(Date.now())}]: (ERROR) ${error}`);
@@ -79,14 +85,14 @@ let botG = function (g) {
     updated = true;
 }
 
-let botGD = function (g, u) {
-    if (u) {
-        console.log(chalk.white(`[${new Date(Date.now())}]: `), chalk.bold.magenta(`Guild unavailable. ${g.name} | ${g.id}`));
-        logs.push(`[${new Date(Date.now())}]: Guild unavailable. ${g.name} | ${g.id}`);
-        updated = true;
-    } else {
+let botGD = function (g) {
+    if (g) {
         console.log(chalk.white(`[${new Date(Date.now())}]: `), chalk.bold.magenta(`Guild delete. ${g.name} | ${g.id}`));
         logs.push(`[${new Date(Date.now())}]: Guild delete. ${g.name} | ${g.id}`);
+        updated = true;
+    } else {
+        console.log(chalk.white('Guild deleted.'));
+        logs.push(`[${new Date(Date.now())}]: Guild delete.`);
         updated = true;
     }
 }

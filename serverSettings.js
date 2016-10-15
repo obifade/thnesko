@@ -45,9 +45,9 @@ bot.on('guildCreate', (guild) => {
     log.botG(guild);
 });
 
-bot.on('guildDelete', (guild, unavailable) => {
-    log.botGD(guild, unavailable);
-    if (unavailable) return;
+bot.on('guildDelete', (guild) => {
+    if (!guild) return;
+    log.botGD(guild);
     if (!database.hasOwnProperty(guild.id)) return;
     delete database[guild.id];
     updated = true;
