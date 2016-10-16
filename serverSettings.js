@@ -451,8 +451,8 @@ bot.commands.playlist.registerSubcommand('clear', (msg, args) => {
 bot.registerCommand('tag', (msg, args) => {
     if (Object.keys(database[msg.channel.guild.id].tags).length === 0) return `**${msg.author.username}**, your guild currently has no tags.`;
     if (args.length === 0) return `**${msg.author.username}**, please specify the tag you wish to use. If you're not sure, use ;tag search to search for a tag.`;
-    if (!database[msg.channel.guild.id].tags.hasOwnProperty(args.join(' ').toLowerCase())) return `**${msg.author.username}**, no such tag found.`;
-    return database[msg.channel.guild.id].tags[args.join(' ').toLowerCase()].tag;
+    if (!database[msg.channel.guild.id].tags.hasOwnProperty(args[0].toLowerCase())) return `**${msg.author.username}**, no such tag found.`;
+    return `*${args[0]}*\n${database[msg.channel.guild.id].tags[args[0].toLowerCase()].tag}`;
 }, {
     aliases: ['tags'],
     caseInsensitive: true,
@@ -466,10 +466,10 @@ bot.registerCommand('tag', (msg, args) => {
 
 bot.commands.tag.registerSubcommand('add', (msg, args) => {
     if (Object.keys(database[msg.channel.guild.id].tags).length >= 20) return `**${msg.author.username}**, your guild currently exceeds the maximum of 20 tags.`;
-    if (args.length === 0 || args.length < 3 || args.indexOf('|') < 0) return `**${msg.author.username}**, please specify the tag name and what the tag should return separated by a vertical bar. e.g. ;tag add <tag name> | <tag>`;
+    if (args.length === 0 || args.length < 2) return `**${msg.author.username}**, please specify the tag name and what the tag should return. e.g. ;tag add <tag name> <tag>`;
     if (msg.attachments.length > 0) return `**${msg.author.username}**, I don't currently support adding attachments as tags; if you wish to use an image as a tag, upload it to an image hosting service and use the link.`;
-    let tagName = args.slice(0, args.indexOf('|')).join(' ').toLowerCase();
-    let tagContents = args.slice(args.indexOf('|') + 1, args.length).join(' ');
+    let tagName = args[0].toLowerCase();
+    let tagContents = args.slice(1, args.length).join(' ');
     let tagOwner = `${msg.author.id}`;
     if (database[msg.channel.guild.id].tags.hasOwnProperty(tagName)) return `**${msg.author.username}**, a tag with this name already exists.`;
     if (tagName === tagContents.toLowerCase()) return `**${msg.author.username}**, the tag name and tag contents cannot be the same.`;
@@ -484,19 +484,19 @@ bot.commands.tag.registerSubcommand('add', (msg, args) => {
     caseInsensitive: true,
     description: 'add a tag.',
     fullDescription: 'add a tag to your server tags.',
-    usage: '<tag name> | <tag contents>',
+    usage: '<tag name> (one word) <tag contents>',
     cooldown: 3000
 });
 
 bot.commands.tag.registerSubcommand('remove', (msg, args) => {
     if (Object.keys(database[msg.channel.guild.id].tags).length === 0) return `**${msg.author.username}**, your guild currently has no tags.`;
     if (args.length === 0) return `**${msg.author.username}**, please specify the name of the tag you wish to remove.`;
-    if (!database[msg.channel.guild.id].tags.hasOwnProperty(args.join(' ').toLowerCase())) return `**${msg.author.username}**, no such tag found.`;
+    if (!database[msg.channel.guild.id].tags.hasOwnProperty(args[0].toLowerCase())) return `**${msg.author.username}**, no such tag found.`;
     let perms = msg.member.permission.json;
-    if (!perms.manageMessages && msg.author.id !== database[msg.channel.guild.id].tags[args.join(' ').toLowerCase()].owner) return `**${msg.author.username}**, you cannot remove a tag you do not own or do not have the manageMessages permission.`;
-    delete database[msg.channel.guild.id].tags[args.join(' ').toLowerCase()];
+    if (!perms.manageMessages && msg.author.id !== database[msg.channel.guild.id].tags[args[0].toLowerCase()].owner) return `**${msg.author.username}**, you cannot remove a tag you do not own or do not have the manageMessages permission.`;
+    delete database[msg.channel.guild.id].tags[args[0].toLowerCase()];
     updated = true;
-    return `**${msg.author.username}**, removed the tag, ${args.join(' ').toLowerCase()}.`;
+    return `**${msg.author.username}**, removed the tag, ${args[0].toLowerCase()}.`;
 }, {
     caseInsensitive: true,
     description: 'remove a tag.',
@@ -508,15 +508,14 @@ bot.commands.tag.registerSubcommand('remove', (msg, args) => {
 bot.commands.tag.registerSubcommand('search', (msg, args) => {
     if (Object.keys(database[msg.channel.guild.id].tags).length === 0) return `**${msg.author.username}**, your guild currently has no tags.`;
     if (args.length === 0) return `**${msg.author.username}**, please specify the name of the tag you wish to search for.`;
-    if (!database[msg.channel.guild.id].tags.hasOwnProperty(args.join(' ').toLowerCase())) return `**${msg.author.username}**, no such tag found.`;
-    if (msg.author.id !== database[msg.channel.guild.id].tags[args.join(' ').toLowerCase()].owner) return `**${msg.author.username}**, you cannot remove a tag you do not own.`;
+    if (!database[msg.channel.guild.id].tags.hasOwnProperty(args[0].toLowerCase())) return `**${msg.author.username}**, no such tag found.`;
     let result = `\`\`\`\n`;
-    result += `Tag Name: ${args.join(' ').toLowerCase()}\n`;
-    result += `Tag: ${database[msg.channel.guild.id].tags[args.join(' ').toLowerCase()].tag}\n`;
-    result += `Owner(ID): ${database[msg.channel.guild.id].tags[args.join(' ').toLowerCase()].owner}\n`;
-    let ownerMember = msg.channel.guild.members.get(database[msg.channel.guild.id].tags[args.join(' ').toLowerCase()].owner);
+    result += `Tag Name: ${args[0].toLowerCase()}\n`;
+    result += `Tag: ${database[msg.channel.guild.id].tags[args[0].toLowerCase()].tag}\n`;
+    result += `Owner(ID): ${database[msg.channel.guild.id].tags[args[0].toLowerCase()].owner}\n`;
+    let ownerMember = msg.channel.guild.members.get(database[msg.channel.guild.id].tags[args[0].toLowerCase()].owner);
     if (ownerMember) result += `Owner(username): ${ownerMember.user.username}#${ownerMember.user.discriminator}\n`;
-    result += `Created at: ${new Date(database[msg.channel.guild.id].tags[args.join(' ').toLowerCase()].created)}`;
+    result += `Created at: ${new Date(database[msg.channel.guild.id].tags[args[0].toLowerCase()].created)}`;
     result += '\n```';
     return `**${msg.author.username}**, info for that tag:\n${result}`;
 }, {
@@ -541,5 +540,26 @@ bot.commands.tag.registerSubcommand('clear', (msg, args) => {
             'manageGuild': true,
         }
     },
+    cooldown: 5000
+});
+
+bot.commands.tag.registerSubcommand('edit', (msg, args) => {
+    if (args.length === 0 || args.length < 2) return `**${msg.author.username}**, please specify the tag name to edit and the updated contents. e.g. ;tag edit <tag name> <new tag>`;
+    if (msg.attachments.length > 0) return `**${msg.author.username}**, I don't currently support adding attachments as tags; if you wish to use an image as a tag, upload it to an image hosting service and use the link.`;
+    let tagName = args[0].toLowerCase();
+    let tagContents = args.slice(1, args.length).join(' ');
+    let tagOwner = `${msg.author.id}`;
+    if (!database[msg.channel.guild.id].tags.hasOwnProperty(tagName)) return `**${msg.author.username}**, no such tag found.`;
+    let perms = msg.member.permission.json;
+    if (!perms.manageMessages && msg.author.id !== database[msg.channel.guild.id].tags[args[0].toLowerCase()].owner) return `**${msg.author.username}**, you cannot edit a tag you do not own or do not have the manageMessages permission.`;
+    if (tagName === tagContents.toLowerCase()) return `**${msg.author.username}**, the tag name and tag contents cannot be the same.`;
+    database[msg.channel.guild.id].tags[tagName].tag = tagContents;
+    updated = true;
+    return `**${msg.author.username}**, updated the contents of the tag, ${tagName}, to: ${tagContents}`;
+
+}, {
+    caseInsensitive: true,
+    description: 'edit a tag you own.',
+    fullDescription: 'edit the contents of a tag you own (will replace the current contents).',
     cooldown: 5000
 });
