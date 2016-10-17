@@ -24,31 +24,19 @@ setInterval(function () {
     }
 }, 15000);
 
-// leave now; even this one is bad by my standards
 bot.on('messageCreate', (msg) => {
+    if (msg.author.id === bot.user.id) return;
     let date = new Date(Date.now());
-    if ((!bot.commandOptions.ignoreSelf || msg.author.id !== bot.user.id) && (!bot.commandOptions.ignoreBots || !msg.author.bot) && (msg.prefix = bot.checkPrefix(msg))) {
-        let args = msg.content.replace(/<@!/g, "<@").substring(msg.prefix.length).split(" ");
-        let label = args.shift();
-        label = bot.commandAliases[label] || label;
-        let command;
-        if (msg.channel.guild && (command = bot.commands[label]) !== undefined || msg.channel.guild && ((command = bot.commands[label.toLowerCase()]) !== undefined && command.caseInsensitive)) { // Command executed in guild
-            console.log(chalk.white(`[${date}]: `), cmdExC(`${command.label} executed in ${msg.channel.guild.id} (${msg.channel.guild.name}) by ${msg.author.id} (${msg.author.username})`));
-            logs.push(`[${date}]: ${command.label} executed in ${msg.channel.guild.id} (${msg.channel.guild.name}) by ${msg.author.id} (${msg.author.username})`);
-        } else if ((command = bot.commands[label]) !== undefined || ((command = bot.commands[label.toLowerCase()]) !== undefined && command.caseInsensitive)) { // Command executed in DM
-            console.log(chalk.white(`[${date}]: `), cmdExC(`${command.label} executed in DM by ${msg.author.id} (${msg.author.username})`));
-            logs.push(`[${date}]: ${command.label} executed in DM by ${msg.author.id} (${msg.author.username})`);
-        } else if (msg.author.id !== bot.user.id && msg.channel.guild) { // Message recieved in guild starting with prefix
-            console.log(chalk.white(`[${date}]: `), msgRecC(`msgRecC in ${msg.channel.guild.id} (${msg.channel.guild.name}) by ${msg.author.id} (${msg.author.username}): ${msg.cleanContent}`));
-            logs.push(`[${date}]: msgRecC in ${msg.channel.guild.id} (${msg.channel.guild.name}) by ${msg.author.id} (${msg.author.username}): ${msg.cleanContent}`);
-        } else if (msg.author.id !== bot.user.id) { // DM recieved starting with prefix
-            console.log(chalk.white(`[${date}]: `), msgRecC(`msgRecC in DM by ${msg.author.id} (${msg.author.username}): ${msg.cleanContent}`));
-            logs.push(`[${date}]: msgRecC in DM by ${msg.author.id} (${msg.author.username}): ${msg.cleanContent}`);
-        }
-    } else if (msg.author.id !== bot.user.id && msg.channel.guild) { // Message recieved in guild
+    if (msg.command && msg.channel.guild) {
+        console.log(chalk.white(`[${date}]: `), cmdExC(`${msg.command.label} executed in ${msg.channel.guild.id} (${msg.channel.guild.name}) by ${msg.author.id} (${msg.author.username})`));
+        logs.push(`[${date}]: ${msg.command.label} executed in ${msg.channel.guild.id} (${msg.channel.guild.name}) by ${msg.author.id} (${msg.author.username})`);
+    } else if (msg.command) {
+        console.log(chalk.white(`[${date}]: `), cmdExC(`${msg.command.label} executed in DM by ${msg.author.id} (${msg.author.username})`));
+        logs.push(`[${date}]: ${msg.command.label} executed in DM by ${msg.author.id} (${msg.author.username})`);
+    } else if (msg.channel.guild) {
         console.log(chalk.white(`[${date}]: `), msgRecC(`msgRecC in ${msg.channel.guild.id} (${msg.channel.guild.name}) by ${msg.author.id} (${msg.author.username}): ${msg.cleanContent}`));
         logs.push(`[${date}]: msgRecC in ${msg.channel.guild.id} (${msg.channel.guild.name}) by ${msg.author.id} (${msg.author.username}): ${msg.cleanContent}`);
-    } else if (msg.author.id !== bot.user.id) { // DM recieved
+    } else {
         console.log(chalk.white(`[${date}]: `), msgRecC(`msgRecC in DM by ${msg.author.id} (${msg.author.username}): ${msg.cleanContent}`));
         logs.push(`[${date}]: msgRecC in DM by ${msg.author.id} (${msg.author.username}): ${msg.cleanContent}`);
     }
