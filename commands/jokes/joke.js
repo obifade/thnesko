@@ -30,7 +30,7 @@ bot.commands.joke.registerSubcommand('yomamma', (msg, args) => {
             if (msg.mentions.length === 0) {
                 bot.createMessage(msg.channel.id, `**${msg.author.username}**, ${response.data.joke}`).catch(error => log.errC(error));
             } else {
-                bot.createMessage(msg.channel.id, `**${msg.channel.guild.members.find(m => m.id === msg.mentions[0].id).user.username}**, ${response.data.joke}`).catch(error => log.errC(error));
+                bot.createMessage(msg.channel.id, `**${msg.channel.guild.members.get(msg.mentions[0].id).user.username}**, ${response.data.joke}`).catch(error => log.errC(error));
             }
         }
     }).catch((response) => {

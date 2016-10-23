@@ -6,10 +6,10 @@ bot.registerCommand('serverinfo', (msg, args) => {
     let response = `**${msg.author.username}**, \`\`\`xl\n` +
         `NAME: ${msg.channel.guild.name.toLowerCase()}\n` +
         `ID: ${msg.channel.guild.id}\n` +
-        `OWNER: ${msg.channel.guild.members.find(m => m.id === msg.channel.guild.ownerID).user.username.toLowerCase()} (ID: ${msg.channel.guild.ownerID})\n` +
+        `OWNER: ${msg.channel.guild.members.get(msg.channel.guild.ownerID).user.username.toLowerCase()} (ID: ${msg.channel.guild.ownerID})\n` +
         `CREATED AT: ${new Date(msg.channel.guild.createdAt)}\n` +
         `DEFAULT CHANNEL: ${msg.channel.guild.defaultChannel.name}\n`;
-    let afkChannel = msg.channel.guild.channels.find(c => c.id === msg.channel.guild.afkChannelID);
+    let afkChannel = msg.channel.guild.channels.get(msg.channel.guild.afkChannelID);
     if (afkChannel) response += `AFK CHANNEL: ${afkChannel.name.toLowerCase()}\n`;
     let channels = msg.channel.guild.channels.filter(c => c);
     response += `TEXT CHANNELS: ${channels.filter(c => c.type === 0).map(c => c.name).join(', ').toLowerCase()}\n` +
