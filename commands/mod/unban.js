@@ -3,7 +3,7 @@ const bot = require('./../../index.js');
 const log = require('./../../logger.js');
 
 bot.registerCommand('unban', (msg, args) => {
-    if (args.length === 0) return `**${msg.author.username}**, I need to know who to unban, type their username and discriminator after ;unban.`;
+    if (args.length === 0) return `**${msg.author.username}**, I need to know who to unban, type their username and discriminator after ${msg.prefix}unban.`;
     let match = /#\d{4}/.exec(args.join(' '));
     if (!match) return `**${msg.author.username}**, invalid input. Pass a username and discriminator. (If you don't know these, unban them in server settings or use a better mod bot)`;
     bot.getGuildBans(msg.channel.guild.id).then((bans) => {

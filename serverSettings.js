@@ -237,8 +237,8 @@ bot.registerCommand('prefix', (msg, args) => {
 
 bot.commands.prefix.registerSubcommand('set', (msg, args) => {
     if (args.length === 0) return `**${msg.author.username}**, please pass the prefix you would like to change to.`;
-    if (!/^['!"#$%&()*+,\-.\/:;<=>?@\[\]^_`{|}~]$/.test(args[0])) return `**${msg.author.username}**, sorry, that is not accepted as a prefix. use ;help prefix to see the list of accepeted.`;
-    if (args[0] === ';') return `**${msg.author.username}**, that is the default prefix. Use ;prefix remove to change back to this if you're using a custom prefix.`;
+    if (!/^['!"#$%&()*+,\-.\/:;<=>?@\[\]^_`{|}~]$/.test(args[0])) return `**${msg.author.username}**, sorry, that is not accepted as a prefix. use ${msg.prefix}help prefix to see the list of accepeted.`;
+    if (args[0] === ';') return `**${msg.author.username}**, that is the default prefix. Use ${msg.prefix}prefix remove to change back to this if you're using a custom prefix.`;
     database[msg.channel.guild.id].prefixChar = args[0];
     bot.registerGuildPrefix(msg.channel.guild.id, args[0]);
     updated = true;
@@ -314,8 +314,8 @@ bot.registerCommand('playlist', (msg, args) => {
 });
 
 bot.commands.playlist.registerSubcommand('add', (msg, args) => {
-    if (database[msg.channel.guild.id].serverPlaylist.length > 150) return `**${msg.author.username}**, sorry, your guild playlist has reached the maximum of 150 songs. Consider removing some using ;playlist remove <#number>.`;
-    if (args.length === 0) return `**${msg.author.username}**, please add a song by the title or from a YouTube playlist with ;playlist add playlist <playlist name>.`;
+    if (database[msg.channel.guild.id].serverPlaylist.length > 150) return `**${msg.author.username}**, sorry, your guild playlist has reached the maximum of 150 songs. Consider removing some using ${msg.prefix}playlist remove <#number>.`;
+    if (args.length === 0) return `**${msg.author.username}**, please add a song by the title or from a YouTube playlist with ${msg.prefix}playlist add playlist <playlist name>.`;
     if (args[0] === 'playlist') {
         args.splice(0, 1);
         if (args.length < 1) return `**${msg.author.username}**, please specify the name of the playlist you wish to add from.`;
@@ -397,7 +397,7 @@ bot.commands.playlist.registerSubcommand('add', (msg, args) => {
     caseInsensitive: true,
     description: 'bring the music to the playlist.',
     fullDescription: 'add a song to the server playlist.',
-    usage: '<song name> OR playlist <playlist name> e.g. ;playlist add playlist <name> (max of 50 songs from a single playlist)',
+    usage: '<song name> OR playlist <playlist name> e.g. playlist add playlist <name> (max of 50 songs from a single playlist)',
     requirements: {
         permissions: {
             'voiceConnect': true,
@@ -408,7 +408,7 @@ bot.commands.playlist.registerSubcommand('add', (msg, args) => {
 
 bot.commands.playlist.registerSubcommand('remove', (msg, args) => {
     if (database[msg.channel.guild.id].serverPlaylist.length === 0) return `**${msg.author.username}**, your guild playlist is currently empty.`;
-    if (args.length === 0 || isNaN(args[0])) return `**${msg.author.username}**, please specify the song to remove by the valid playlist index number. use ;playlist to view your playlist.`;
+    if (args.length === 0 || isNaN(args[0])) return `**${msg.author.username}**, please specify the song to remove by the valid playlist index number. use ${msg.prefix}playlist to view your playlist.`;
     if (args[0] > database[msg.channel.guild.id].serverPlaylist.length || args[0] <= 0) return `**${msg.author.username}**, please specify a valid playlist number.`;
     bot.createMessage(msg.channel.id, `**${msg.author.username}**, removed ${database[msg.channel.guild.id].playlistInfo[args[0] - 1]} from the server playlist.`).catch(error => log.errC(error));
     database[msg.channel.guild.id].serverPlaylist.splice(args[0] - 1, 1);
@@ -450,7 +450,7 @@ bot.commands.playlist.registerSubcommand('clear', (msg, args) => {
 
 bot.registerCommand('tag', (msg, args) => {
     if (Object.keys(database[msg.channel.guild.id].tags).length === 0) return `**${msg.author.username}**, your guild currently has no tags.`;
-    if (args.length === 0) return `**${msg.author.username}**, please specify the tag you wish to use. If you're not sure, use ;tag search to search for a tag.`;
+    if (args.length === 0) return `**${msg.author.username}**, please specify the tag you wish to use. If you're not sure, use ${msg.prefix}tag search to search for a tag.`;
     if (!database[msg.channel.guild.id].tags.hasOwnProperty(args[0].toLowerCase())) return `**${msg.author.username}**, no such tag found.`;
     return `*${args[0]}*\n${database[msg.channel.guild.id].tags[args[0].toLowerCase()].tag}`;
 }, {
@@ -466,7 +466,7 @@ bot.registerCommand('tag', (msg, args) => {
 
 bot.commands.tag.registerSubcommand('add', (msg, args) => {
     if (Object.keys(database[msg.channel.guild.id].tags).length >= 20) return `**${msg.author.username}**, your guild currently exceeds the maximum of 20 tags.`;
-    if (args.length === 0 || args.length < 2) return `**${msg.author.username}**, please specify the tag name and what the tag should return. e.g. ;tag add <tag name> <tag>`;
+    if (args.length === 0 || args.length < 2) return `**${msg.author.username}**, please specify the tag name and what the tag should return. e.g. ${msg.prefix}tag add <tag name> <tag>`;
     if (msg.attachments.length > 0) return `**${msg.author.username}**, I don't currently support adding attachments as tags; if you wish to use an image as a tag, upload it to an image hosting service and use the link.`;
     let tagName = args[0].toLowerCase();
     let tagContents = args.slice(1, args.length).join(' ');
@@ -544,7 +544,7 @@ bot.commands.tag.registerSubcommand('clear', (msg, args) => {
 });
 
 bot.commands.tag.registerSubcommand('edit', (msg, args) => {
-    if (args.length === 0 || args.length < 2) return `**${msg.author.username}**, please specify the tag name to edit and the updated contents. e.g. ;tag edit <tag name> <new tag>`;
+    if (args.length === 0 || args.length < 2) return `**${msg.author.username}**, please specify the tag name to edit and the updated contents. e.g. ${msg.prefix}tag edit <tag name> <new tag>`;
     if (msg.attachments.length > 0) return `**${msg.author.username}**, I don't currently support adding attachments as tags; if you wish to use an image as a tag, upload it to an image hosting service and use the link.`;
     let tagName = args[0].toLowerCase();
     let tagContents = args.slice(1, args.length).join(' ');

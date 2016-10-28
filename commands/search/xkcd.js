@@ -4,7 +4,7 @@ const axios = require('axios');
 const log = require('./../../logger.js');
 
 bot.registerCommand('xkcd', (msg, args) => {
-    if (args.length > 0 && isNaN(args[0])) return `**${msg.author.username}**, please pass me a comic number or ;xkcd to get the current comic.`;
+    if (args.length > 0 && isNaN(args[0])) return `**${msg.author.username}**, please pass me a comic number or ${msg.prefix}xkcd to get the current comic.`;
     let idURL = args[0] ? args[0] + '/' : '';
     axios.get(`http://xkcd.com/${idURL}info.0.json`).then((response) => {
         bot.createMessage(msg.channel.id, `**${msg.author.username}**, ${response.data.title} \n ${response.data.alt} \n ${response.data.img}`).catch(error => log.errC(error));

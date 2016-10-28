@@ -4,7 +4,7 @@ const log = require('./../../logger.js');
 
 bot.registerCommand('cleanup', (msg, args) => {
     if (args.length === 0) return `**${msg.author.username}**, I need to know how many messages to search through. Specify all for no limit (will delete all messages in the channel).`;
-    if (args[0] !== 'all' && isNaN(args[0]) || parseInt(args[0]) < 1) return `**${msg.author.username}**, Invalid input. Please make sure the value following ;cleanup is a number, no less than 1 or 'all'.`;
+    if (args[0] !== 'all' && isNaN(args[0]) || parseInt(args[0]) < 1) return `**${msg.author.username}**, Invalid input. Please make sure the value following ${msg.prefix}cleanup is a number, no less than 1 or 'all'.`;
     if (args[0] === 'all') {
         let toDel = -1;
     } else {
@@ -31,7 +31,7 @@ bot.registerCommand('cleanup', (msg, args) => {
 
 bot.commands.cleanup.registerSubcommand('user', (msg, args) => {
     if (args.length === 0) return `**${msg.author.username}**, please pass the username and discriminator of the person you would like to clean. e.g. username#1234 or mention them.`;
-    if (!args[args.length - 1] || args[args.length - 1] !== 'all' && isNaN(args[args.length - 1]) || parseInt(args[args.length - 1]) < 1) return `**${msg.author.username}**, Invalid input. Please make sure the value following ;cleanup user <user> is a number and no less than 1 or 'all'.`;
+    if (!args[args.length - 1] || args[args.length - 1] !== 'all' && isNaN(args[args.length - 1]) || parseInt(args[args.length - 1]) < 1) return `**${msg.author.username}**, Invalid input. Please make sure the value following ${msg.prefix}cleanup user <user> is a number and no less than 1 or 'all'.`;
     let user;
     let amount;
     let toDel;

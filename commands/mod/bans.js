@@ -3,7 +3,7 @@ const bot = require('./../../index.js');
 const log = require('./../../logger.js');
 
 bot.registerCommand('ban', (msg, args) => {
-    if (args.length === 0 || msg.mentions.length === 0 || args[0] !== `<@${msg.mentions[0].id}>`) return `**${msg.author.username}**, I need to know who to ban - tag them after ;ban.`;
+    if (args.length === 0 || msg.mentions.length === 0 || args[0] !== `<@${msg.mentions[0].id}>`) return `**${msg.author.username}**, I need to know who to ban - tag them after ${msg.prefix}ban.`;
     if (msg.mentions.length > 1) return `**${msg.author.username}**, I can only ban one person at a time.`;
     if (msg.mentions[0].id === msg.channel.guild.ownerID) return `**${msg.author.username}**, this person is the owner of the server. No one can ban them.`;
     if (msg.mentions[0].id === bot.user.id) return `**${msg.author.username}**, bitch please. (seriously though, if you want to ban me, do it manually)`;
@@ -43,7 +43,7 @@ bot.registerCommand('ban', (msg, args) => {
 });
 
 bot.registerCommand('softban', (msg, args) => {
-    if (args.length === 0 || msg.mentions.length === 0 || args[0] !== `<@${msg.mentions[0].id}>`) return `**${msg.author.username}**, I need to know who to softban - tag them after ;softban.`;
+    if (args.length === 0 || msg.mentions.length === 0 || args[0] !== `<@${msg.mentions[0].id}>`) return `**${msg.author.username}**, I need to know who to softban - tag them after ${msg.prefix}softban.`;
     if (msg.mentions.length > 1) return `**${msg.author.username}**, I can only softban one person at a time.`;
     if (msg.mentions[0].id === msg.channel.guild.ownerID) return `**${msg.author.username}**, this person is the owner of the server. No one can softban them.`;
     if (msg.mentions[0].id === bot.user.id) return `**${msg.author.username}**, bitch please. (use ;cleanup bot)`;

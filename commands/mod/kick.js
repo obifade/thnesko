@@ -3,7 +3,7 @@ const bot = require('./../../index.js');
 const log = require('./../../logger.js');
 
 bot.registerCommand('kick', (msg, args) => {
-    if (args.length === 0 || msg.mentions.length === 0 || args[0] !== `<@${msg.mentions[0].id}>`) return `**${msg.author.username}**, I need to know who to kick, tag them after ;kick.`;
+    if (args.length === 0 || msg.mentions.length === 0 || args[0] !== `<@${msg.mentions[0].id}>`) return `**${msg.author.username}**, I need to know who to kick, tag them after ${msg.prefix}kick.`;
     if (msg.mentions.length > 1) return `**${msg.author.username}**, I can only kick one person at a time.`;
     if (msg.mentions[0].id === msg.channel.guild.ownerID) return `**${msg.author.username}**, this person is the owner of the server. No one can kick them.`;
     if (msg.mentions[0].id === bot.user.id) return `**${msg.author.username}**, bitch please. (seriously though, if you want to kick me, do it manually)`;

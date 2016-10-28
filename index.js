@@ -99,7 +99,7 @@ bot.registerCommand('help', (msg, args) => {
         result += generalCommands;
         result += modCommands;
         result += musicCommands;
-        result += `\nType ${msg.prefix}help <command> for more info on a command.\n\n*Note: if a command fails to execute with no response, you are most likely on a cooldown; use ;help <command name> to view cooldown times*`;
+        result += `\nType ${msg.prefix}help <command> for more info on a command.\n\n*Note: if a command fails to execute with no response, you are most likely on a cooldown; use ${msg.prefix}help <command name> to view cooldown times*`;
     }
     bot.getDMChannel(msg.author.id).then((c) => {
         bot.createMessage(c.id, result).catch(error => log.errC(error));

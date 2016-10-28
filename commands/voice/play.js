@@ -8,11 +8,11 @@ const log = require('./../../logger.js');
 const queue = require('./join.js');
 
 bot.registerCommand('play', (msg, args) => {
-    if (msg.channel.guild.members.get(bot.user.id).voiceState.channelID === null) return `**${msg.author.username}**, I must be in a voice channel first. Use ;join.`;
+    if (msg.channel.guild.members.get(bot.user.id).voiceState.channelID === null) return `**${msg.author.username}**, I must be in a voice channel first. Use ${msg.prefix}join.`;
     if (msg.member.voiceState.channelID === null || msg.member.voiceState.channelID !== msg.channel.guild.members.get(bot.user.id).voiceState.channelID) return `**${msg.author.username}**, you must be in the same channel as me to use this command.`;
     if (args.length === 0) return `**${msg.author.username}**, please give me something to search for and play. Alternatively, type playlist after play to listen to the server playlist.`;
     let connection = bot.voiceConnections.get(msg.channel.guild.id);
-    if (connection.playing && queue[connection.id].type === 'playlist') return `**${msg.author.username}**, I'm currently playing from the playlist, wait for it to finish or use ;stop.`;
+    if (connection.playing && queue[connection.id].type === 'playlist') return `**${msg.author.username}**, I'm currently playing from the playlist, wait for it to finish or use ${msg.prefix}stop.`;
     if (queue[connection.id].info && queue[connection.id].info.length > 50) return `**${msg.author.username}**, sorry, your queue currently exceeds the maximum of 50 songs.`;
     let params = {
         key: auth.ytKey,
@@ -75,11 +75,11 @@ bot.registerCommand('play', (msg, args) => {
 });
 
 bot.commands.play.registerSubcommand('playlist', (msg, args) => {
-    if (msg.channel.guild.members.get(bot.user.id).voiceState.channelID === null) return `**${msg.author.username}**, I must be in a voice channel first. Use ;join.`;
+    if (msg.channel.guild.members.get(bot.user.id).voiceState.channelID === null) return `**${msg.author.username}**, I must be in a voice channel first. Use ${msg.prefix}join.`;
     if (msg.member.voiceState.channelID === null || msg.member.voiceState.channelID !== msg.channel.guild.members.get(bot.user.id).voiceState.channelID) return `**${msg.author.username}**, you must be in the same channel as me to use this command.`;
     let connection = bot.voiceConnections.get(msg.channel.guild.id);
     if (connection.playing && queue[connection.id].type === 'playlist') return `**${msg.author.username}**, I'm already playing from the playlist.`;
-    if (connection.playing && queue[connection.id].type === 'queue') return `**${msg.author.username}**, I'm currently playing form the queue, wait for it to finish or use ;stop.`;
+    if (connection.playing && queue[connection.id].type === 'queue') return `**${msg.author.username}**, I'm currently playing form the queue, wait for it to finish or use ${msg.prefix}stop.`;
     if (database[msg.channel.guild.id].serverPlaylist.length < 1) return `**${msg.author.username}**, your playlist is currently empty. Use ;playlist add to add songs to it.`;
     queue[connection.id] = {};
     queue[connection.id].index = 0;

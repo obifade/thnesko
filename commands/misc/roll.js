@@ -4,7 +4,7 @@ const axios = require('axios');
 const log = require('./../../logger.js');
 
 bot.registerCommand('roll', (msg, args) => {
-    if (args.length === 0 || !/^\d+d{1}\d+/.test(args.join(' '))) return `**${msg.author.username}**, Invalid syntax. e.g. ;roll 1d6.`;
+    if (args.length === 0 || !/^\d+d{1}\d+/.test(args.join(' '))) return `**${msg.author.username}**, Invalid syntax. e.g. ${msg.prefix}roll 1d6.`;
     let uri = encodeURIComponent(args.join(' '));
     axios.get('https://rolz.org/api/?' + uri + '.json').then((response) => {
         if (typeof response.data.result === 'string' && response.data.result.startsWith('invalid dice code')) {

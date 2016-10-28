@@ -44,7 +44,7 @@ bot.registerCommand('join', (msg, args) => {
         connection.on('warn', (message) => {
             log.warnC(`Voice warning: ${message}`);
         });
-        bot.createMessage(msg.channel.id, `Joined ${msg.channel.guild.channels.get(connection.channelID).name} for ${msg.author.username}. Ready for ;play.`).catch(error => log.errC(error));
+        bot.createMessage(msg.channel.id, `Joined ${msg.channel.guild.channels.get(connection.channelID).name} for ${msg.author.username}. Ready for ${msg.prefix}play.`).catch(error => log.errC(error));
     }).catch(error => log.errC(error));
 }, {
     caseInsensitive: true,

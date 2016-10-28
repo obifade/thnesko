@@ -4,7 +4,7 @@ const axios = require('axios');
 const log = require('./../../logger.js');
 
 bot.registerCommand('overwatch', (msg, args) => {
-    if (args.length !== 2) return `**${msg.author.username}**, please pass the appropriate arguments. Use ;help overwatch to see usage.`;
+    if (args.length !== 2) return `**${msg.author.username}**, please pass the appropriate arguments. Use ${msg.prefix}help overwatch to see usage.`;
     if (!/^[^0-9]{1}[a-zA-Z0-9\u00E0-\u00FC]{2,12}#\d{4}$/.test(args[0])) return `**${msg.author.username}**, please pass a valid BattleTag and Identifier (BattleTag#1234).`;
     if (args[1] !== 'xbl' && args[1] !== 'psn' && args[1] !== 'pc') return `**${msg.author.username}**, please pass a valid platform. Either pc, xbl (xbox live), or psn (playstation network).`;
     bot.createMessage(msg.channel.id, `**${msg.author.username}**, searching...`).catch(error => log.errC(error));
@@ -91,7 +91,7 @@ bot.registerCommand('overwatch', (msg, args) => {
 });
 
 bot.commands.overwatch.registerSubcommand('achievements', (msg, args) => {
-    if (args.length !== 2) return `**${msg.author.username}**, please pass the appropriate arguments. Use ;help overwatch to see usage.`;
+    if (args.length !== 2) return `**${msg.author.username}**, please pass the appropriate arguments. Use ${msg.prefix}help overwatch to see usage.`;
     if (!/^[^0-9]{1}[a-zA-Z0-9\u00E0-\u00FC]{2,12}#\d{4}$/.test(args[0])) return `**${msg.author.username}**, please pass a valid BattleTag and Identifier (BattleTag#1234).`;
     if (args[1] !== 'xbl' && args[1] !== 'psn' && args[1] !== 'pc') return `**${msg.author.username}**, please pass a valid platform. Either pc, xbl (xbox live), or psn (playstation network).`;
     bot.createMessage(msg.channel.id, `**${msg.author.username}**, searching...`).catch(error => log.errC(error));
