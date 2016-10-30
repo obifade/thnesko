@@ -508,6 +508,23 @@ bot.commands.tag.registerSubcommand('remove', (msg, args) => {
 bot.commands.tag.registerSubcommand('search', (msg, args) => {
     if (Object.keys(database[msg.channel.guild.id].tags).length === 0) return `**${msg.author.username}**, your guild currently has no tags.`;
     if (args.length === 0) return `**${msg.author.username}**, please specify the name of the tag you wish to search for.`;
+    let tags = Object.keys(database[msg.channel.guild.id].tags).filter(t => t.includes(args[0])).join(', ');
+    if (tags.length > 0) {
+      return `**${msg.author.username}**, I found the following tags containing, ${args[0]}:\n${tags}`;
+    } else {
+      return `No tags found containing, ${args[0]}.`;
+    }
+}, {
+    caseInsensitive: true,
+    description: 'search for tags containing a string.',
+    fullDescription: 'search for tags from your server tags. Will return any tags with the name containing the specified string.',
+    usage: '<tag name>',
+    cooldown: 3000
+});
+
+bot.commands.tag.registerSubcommand('info', (msg, args) => {
+    if (Object.keys(database[msg.channel.guild.id].tags).length === 0) return `**${msg.author.username}**, your guild currently has no tags.`;
+    if (args.length === 0) return `**${msg.author.username}**, please specify the name of the tag you wish to search for.`;
     if (!database[msg.channel.guild.id].tags.hasOwnProperty(args[0].toLowerCase())) return `**${msg.author.username}**, no such tag found.`;
     let result = `\`\`\`\n`;
     result += `Tag Name: ${args[0].toLowerCase()}\n`;

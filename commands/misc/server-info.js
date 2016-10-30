@@ -17,7 +17,7 @@ bot.registerCommand('serverinfo', (msg, args) => {
         `NUMBER OF MEMBERS: ${msg.channel.guild.members.filter(m => !m.user.bot).length}\n` +
         `NUMBER OF BOTS: ${msg.channel.guild.members.filter(m => m.user.bot).length}\n` +
         `REGION: ${msg.channel.guild.region.toLowerCase()}\n`;
-    let roles = msg.channel.guild.roles.filter(r => r);
+    let roles = msg.channel.guild.roles;
     response += `ROLES: ${roles.map(m => m.name).join(', ').toLowerCase()}\`\`\``;
     if (msg.channel.guild.icon != null) response += `ICON: https://cdn.discordapp.com/icons/${msg.channel.guild.id}/${msg.channel.guild.icon}.jpg\n`;
     bot.createMessage(msg.channel.id, response).catch(error => log.errC(error));
